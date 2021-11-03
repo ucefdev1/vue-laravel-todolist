@@ -34,6 +34,7 @@ data: function() {
                .catch(error => {
                    console.log(error);
                })
+               
            }
        }
 }

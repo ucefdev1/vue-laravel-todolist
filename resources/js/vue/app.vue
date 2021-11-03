@@ -4,7 +4,9 @@
             <h2 class="title">Todo List</h2>
             <add-item-form/>
     </div>
-    <list-view :items="items"/>
+    <list-view :items="items"
+    v-on:reloadList="getList()"
+    />
 
 </div>
 </template>
@@ -34,7 +36,7 @@ import listView from './listView.vue'
 export default  {
 
 components:{addItemForm, listView},
-data: () => {
+data: function () {
     return{
         items: []
     }
@@ -49,9 +51,11 @@ methods: {
             console.log(error);
         } )
     },
-    created(){
-        this.getList();
-    }
+       
+    
+},
+created(){
+  this.getList();
 }
    
 }
