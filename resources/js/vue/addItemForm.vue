@@ -28,7 +28,9 @@ data: function() {
                    item: this.item
                }).then(response  => {
                    if(response.status == 201){
-                       this.item.name == "";
+                        console.log('Item added');
+                       this.item.name = "";
+                       this.$emit('reloadList');
                      }
                })
                .catch(error => {

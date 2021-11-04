@@ -12179,7 +12179,10 @@ __webpack_require__.r(__webpack_exports__);
         item: this.item
       }).then(function (response) {
         if (response.status == 201) {
-          _this.item.name == "";
+          console.log('Item added');
+          _this.item.name = "";
+
+          _this.$emit('reloadList');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -12293,11 +12296,27 @@ __webpack_require__.r(__webpack_exports__);
     updateCheck: function updateCheck() {
       var _this = this;
 
+      // console.log('test');
       axios.put('api/item/' + this.item.id, {
         item: this.item
       }).then(function (response) {
         if (response.status == 200) {
           _this.$emit('itemChanged');
+
+          console.log('Item Updated');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    removeItem: function removeItem() {
+      var _this2 = this;
+
+      axios["delete"]('api/item/' + this.item.id).then(function (response) {
+        if (response.status == 200) {
+          _this2.$emit('itemChanged');
+
+          console.log('Item deleted');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -30829,7 +30848,13 @@ var render = function() {
         [
           _c("h2", { staticClass: "title" }, [_vm._v("Todo List")]),
           _vm._v(" "),
-          _c("add-item-form")
+          _c("add-item-form", {
+            on: {
+              reloadList: function($event) {
+                return _vm.getList()
+              }
+            }
+          })
         ],
         1
       ),
@@ -30875,37 +30900,37 @@ var render = function() {
         {
           name: "model",
           rawName: "v-model",
-          value: _vm.item.completed,
-          expression: "item.completed"
+          value: _vm.item.coompleted,
+          expression: "item.coompleted"
         }
       ],
       attrs: { type: "checkbox" },
       domProps: {
-        checked: Array.isArray(_vm.item.completed)
-          ? _vm._i(_vm.item.completed, null) > -1
-          : _vm.item.completed
+        checked: Array.isArray(_vm.item.coompleted)
+          ? _vm._i(_vm.item.coompleted, null) > -1
+          : _vm.item.coompleted
       },
       on: {
         change: [
           function($event) {
-            var $$a = _vm.item.completed,
+            var $$a = _vm.item.coompleted,
               $$el = $event.target,
               $$c = $$el.checked ? true : false
             if (Array.isArray($$a)) {
               var $$v = null,
                 $$i = _vm._i($$a, $$v)
               if ($$el.checked) {
-                $$i < 0 && _vm.$set(_vm.item, "completed", $$a.concat([$$v]))
+                $$i < 0 && _vm.$set(_vm.item, "coompleted", $$a.concat([$$v]))
               } else {
                 $$i > -1 &&
                   _vm.$set(
                     _vm.item,
-                    "completed",
+                    "coompleted",
                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                   )
               }
             } else {
-              _vm.$set(_vm.item, "completed", $$c)
+              _vm.$set(_vm.item, "coompleted", $$c)
             }
           },
           function($event) {
@@ -30915,9 +30940,11 @@ var render = function() {
       }
     }),
     _vm._v(" "),
-    _c("span", { class: [_vm.item.completed ? "completed" : "", "itemText"] }, [
-      _vm._v(_vm._s(_vm.item.name))
-    ]),
+    _c(
+      "span",
+      { class: [_vm.item.coompleted ? "completed" : "", "itemText"] },
+      [_vm._v(_vm._s(_vm.item.name))]
+    ),
     _vm._v(" "),
     _c(
       "button",
